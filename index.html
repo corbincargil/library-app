@@ -17,10 +17,10 @@
                     <li><label for="author">Author:</label><input type="text" id="author"></li>
                     <li><label for="page-count">Page Count</label><input type="number" id="page-count"></li>
                     <li><label>Book Progress:</label>
-                        <ul>
-                            <li><input type="radio" id="not-started" name="progress" checked><label for="not-started">Not Started</label></li>
-                            <li><input type="radio" id="in-progress" name="progress"><label for="in-progress">In Progress</label></li>
-                            <li><input type="radio" id="finished" name="progress"><label for="finished">Finished</label></li>
+                        <ul id="book-progress">
+                            <li><input type="radio" id="not-started" name="progress" checked value="1"><label for="not-started">Not Started</label></li>
+                            <li><input type="radio" id="in-progress" name="progress" value="2"><label for="in-progress">In Progress</label></li>
+                            <li><input type="radio" id="finished" name="progress" value="3"><label for="finished">Finished</label></li>
                             
                         </ul>
                     </li>

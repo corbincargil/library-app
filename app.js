@@ -13,15 +13,15 @@ const submitButton = document.querySelector('#submit-btn');
 const newTitle = document.querySelector('#title');
 const newAuthor = document.querySelector('#author');
 const newPageCount = document.querySelector('#page-count');
-const hasRead = document.querySelector('#finished-reading');
+let newBookProgress = document.getElementsByName('progress');
 
 
 //Book object
-function Book(title, author, pages, finishedReading) {
+function Book(title, author, pages, bookProgress) {
     this.title = title
     this.author = author
     this.pages = pages
-    this.finishedReading = finishedReading
+    this.bookProgress = bookProgress
     this.info = function() {
         if (finishedReading == true) {
             return `${title} by ${author} is ${pages} pages long. Has been read.`;
@@ -32,13 +32,12 @@ function Book(title, author, pages, finishedReading) {
 }
 
 //                                  Functions
-
 //add book to library
-const addBookToLibrary = (title, author, pages, finishedReading) => {
+const addBookToLibrary = (title, author, pages, bookProgress) => {
     if (!title) {alert('Please input a title for the new book!')};
     if (!author) {alert('Please input an author for the new book!')};
     if (!pages) {alert('Please input a page count for the new book!')};
-    let newBook = new Book(title,author,pages,finishedReading);
+    let newBook = new Book(title,author,pages,bookProgress);
     myLibrary.push(newBook);
     return myLibrary;
 }
@@ -48,9 +47,17 @@ const displayForm = () => {
 
 }
 
-//Event Listeners
+//get radio btn values for newBookProgress
+const getNewBookProgress = () => {
+    for (let i = 0; i < newBookProgress.length; i++) {
+        if (newBookProgress[i].checked){ newBookProgress = newBookProgress[i].value}
+    }
+}
+
+//                                  Event Listeners
 submitButton.addEventListener('click', () => {
-    addBookToLibrary(newTitle.value, newAuthor.value, newPageCount.value, hasRead.value)
+    getNewBookProgress();
+    addBookToLibrary(newTitle.value, newAuthor.value, newPageCount.value, newBookProgress)
     
     console.log(myLibrary);
 })
