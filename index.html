@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corbin's Library</title>
+    <script src="./app.js" defer></script>
+</head>
+<body>
+    <div class="form-container">
+        <fieldset>
+            <legend>New Book</legend>
+            <ul>
+                <form>
+                    <li><label for="title">Title:</label><input type="text" id="title"></li>
+                    <li><label for="author">Author:</label><input type="text" id="author"></li>
+                    <li><label for="page-count">Page Count</label><input type="number" id="page-count"></li>
+                    <li><label>Book Progress:</label>
+                        <ul>
+                            <li><input type="radio" id="not-started" name="progress" checked><label for="not-started">Not Started</label></li>
+                            <li><input type="radio" id="in-progress" name="progress"><label for="in-progress">In Progress</label></li>
+                            <li><input type="radio" id="finished" name="progress"><label for="finished">Finished</label></li>
+                            
+                        </ul>
+                    </li>
+                    <li>
+                        <button id="submit-btn" type="button">Add Book</button>
+                        <button type="reset">Reset</button>
+                    </li>
+                </form>
+            </ul>
+        </fieldset>
+    </div>
+</body>
+</html>
