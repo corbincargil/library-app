@@ -14,6 +14,7 @@ let myLibrary = [];
 // - Click book card to enlarge
 // - media queries (mobile access)
 // - Image of book for background of the cards (different book/color for each book added?)
+// - Dark & Light themes
 
 
 
