@@ -1,0 +1,24 @@
+:root { 
+    --main-bg-color: rgb(215, 215, 215);
+}
+
+body{
+    background-color: var(--main-bg-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.library-container {
+    display: flex;
+
+}
+.not-started,
+.in-progress,
+.finished {
+    border: 3px solid black;
+}
+
+.book-container{
+    
+}

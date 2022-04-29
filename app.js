@@ -1,11 +1,20 @@
 let myLibrary = [];
 
-//                                      To-do:
+//                                      Algo:
 // - Display 'new book' form when add book button clicked
 // - After user inputs info, get info when submit button is clicked
 // - Pass info from each input as an argument in addBookToLibrary 
 // - Add function to create a card for each book in the array
+// - Delete card button and ability to change progress status whenever to move the card to a different column
 // - Display each card on the HTML page
+
+//                                      To-do/Features:
+// - Optional inputs on the form (current page count, date finished, etc.)
+// - Delete book button
+// - Click book card to enlarge
+// - media queries (mobile access)
+// - Image of book for background of the cards (different book/color for each book added?)
+
 
 
 //DOM elements

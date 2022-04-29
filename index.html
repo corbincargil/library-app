@@ -6,8 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Corbin's Library</title>
     <script src="./app.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
+
+    
 </head>
 <body>
+    <h1 id="page-title">Your Library</h1>
+    <div class="library-container">
+        <div class="not-started">
+            <h2 class="not-started">Not Started</h2>
+            <div class="book-container">
+                <p class="book-title">The Mortification of Sin</p>
+                <p class="book-author">John Owen</p>
+                <p class="book-page-count">250</p>
+            </div>
+            
+        </div>
+        <div class="in-progress">
+            <h2 class="in-progress">In Progress</h2>
+            <div class="book-container">
+                <p class="book-title">The Well of Ascension</p>
+                <p class="book-author">Brandon Sanderson</p>
+                <p class="book-page-count">785</p>
+            </div>
+        </div>
+        <div class="finished">
+            <h2 class="finished">Finished</h2>
+            <div class="book-container">
+                <p class="book-title">Mistborn</p>
+                <p class="book-author">Brandon Sanderson</p>
+                <p class="book-page-count">643</p>
+            </div>
+            <div class="book-container">
+                <p class="book-title">Mere Christianity</p>
+                <p class="book-author">C.S. Lewis</p>
+                <p class="book-page-count">150</p>
+            </div>
+        </div>
+    </div>
     <div class="form-container">
         <fieldset>
             <legend>New Book</legend>
@@ -18,7 +54,7 @@
                     <li><label for="page-count">Page Count</label><input type="number" id="page-count"></li>
                     <li><label>Book Progress:</label>
                         <ul id="book-progress">
-                            <li><input type="radio" id="not-started" name="progress" checked value="1"><label for="not-started">Not Started</label></li>
+                            <li><input type="radio" id="not-started" name="progress"  value="1"><label for="not-started">Not Started</label></li>
                             <li><input type="radio" id="in-progress" name="progress" value="2"><label for="in-progress">In Progress</label></li>
                             <li><input type="radio" id="finished" name="progress" value="3"><label for="finished">Finished</label></li>
                             
