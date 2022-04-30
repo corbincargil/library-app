@@ -1,5 +1,5 @@
 :root { 
-    --main-bg-color: rgb(94, 94, 94);
+    --main-bg-color: rgb(166, 166, 166);
 }
 
 body{
@@ -7,14 +7,17 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 30px;
 }
+
 
 .library-container {
-    width: clamp(361px,60%,800px);
+    width: clamp(361px,60%,1000px);
     display: grid;
-    grid-template-columns: repeat(3, minmax(120px,1fr));
-
+    grid-template-columns: repeat(3, minmax(145px,1fr));
+    column-gap: 3%;
 }
+
 .not-started,
 .in-progress,
 .finished {
@@ -27,8 +30,110 @@ body{
     border: 1px solid black;
     margin: 10px;
     padding: 10px;
+    border-radius: 5px;
 }
 
-h2 {
-    margin: 0px 8px 0px 8px;
+.book-column {
+    padding: 5px;
+    border: 3px solid black;
+    border-radius: 10px;
+}
+
+#add-book-btn {
+    background-color: rgb(95, 214, 101);
+    color: black;
+    font-weight: 550;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid rgb(48, 129, 52);
+    border-radius: 5px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    align-self: flex-end;
+    margin-right: 20%;
+    width: 110px;
+    height: 50px;
+}
+
+#form-container {
+    padding: 10px;
+    background-color: var(--main-bg-color);
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+#form-container ul {
+    list-style: none;
+    line-height: 1.6;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-header button,
+.form-header img {
+    margin: 0;
+    padding: 0;
+}
+.form-header button {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+fieldset {
+    border: none;
+}
+legend {
+    font-weight: 700;
+}
+
+#form-container.hidden,
+#screen-cover.hidden {
+    display: none;
+}
+
+#form-container.showing {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    top: 50%;
+    left: 50%;
+    margin-top: -150px; 
+    margin-left: -150px;
+    z-index: 2;
+}
+
+#screen-cover.showing {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -50vh;
+    margin-left: -50vw;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.blur {
+    filter: blur(7px);
+}
+
+@media only screen and (max-width: 600px) {
+    .library-container {
+        grid-template-columns: minmax(145px,1fr);
+        row-gap: 30px;
+    }
+
+    #add-book-btn {
+        position: fixed;
+        left: 250px;
+        bottom: 30px;
+    }
 }

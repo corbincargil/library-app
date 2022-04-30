@@ -13,7 +13,7 @@
 <body>
     <h1 id="page-title">Your Library</h1>
     <div class="library-container">
-        <div class="not-started">
+        <div class="book-column">
             <h2 class="not-started">Not Started</h2>
             <div class="book-container">
                 <p class="book-title">The Mortification of Sin</p>
@@ -22,7 +22,7 @@
             </div>
             
         </div>
-        <div class="in-progress">
+        <div class="book-column">
             <h2 class="in-progress">In Progress</h2>
             <div class="book-container">
                 <p class="book-title">The Well of Ascension</p>
@@ -30,7 +30,7 @@
                 <p class="book-page-count">785</p>
             </div>
         </div>
-        <div class="finished">
+        <div class="book-column">
             <h2 class="finished">Finished</h2>
             <div class="book-container">
                 <p class="book-title">Mistborn</p>
@@ -44,14 +44,19 @@
             </div>
         </div>
     </div>
-    <div class="form-container">
+    <button type="button" id="add-book-btn">Add Book<img src="./icons/plus-circle-outline-black.png" alt=""></button>
+    <div id="screen-cover" class="hidden"></div>
+    <div id="form-container" class="hidden">
         <fieldset>
-            <legend>New Book</legend>
+            <div class="form-header">
+                <legend>New Book</legend>
+                <button id="form-close-btn"><img src="./icons/close-box-outline.png" alt=""></button>
+            </div>
             <ul>
                 <form>
-                    <li><label for="title">Title:</label><input type="text" id="title"></li>
-                    <li><label for="author">Author:</label><input type="text" id="author"></li>
-                    <li><label for="page-count">Page Count</label><input type="number" id="page-count"></li>
+                    <li><label for="new-title">Title:</label><input type="text" id="new-title"></li>
+                    <li><label for="new-author">Author:</label><input type="text" id="new-author"></li>
+                    <li><label for="new-page-count">Page Count:</label><input type="number" id="new-page-count"></li>
                     <li><label>Book Progress:</label>
                         <ul id="book-progress">
                             <li><input type="radio" id="not-started" name="progress"  value="1"><label for="not-started">Not Started</label></li>
@@ -61,8 +66,8 @@
                         </ul>
                     </li>
                     <li>
-                        <button id="submit-btn" type="button">Add Book</button>
-                        <button type="reset">Reset</button>
+                        <button id="submit-btn" type="button">Submit</button>
+                        <button type="reset">Clear</button>
                     </li>
                 </form>
             </ul>

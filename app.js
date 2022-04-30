@@ -19,10 +19,16 @@ let myLibrary = [];
 
 
 //DOM elements
-const submitButton = document.querySelector('#submit-btn');
-const newTitle = document.querySelector('#title');
-const newAuthor = document.querySelector('#author');
-const newPageCount = document.querySelector('#page-count');
+const screenCover = document.querySelector('#screen-cover');
+const formContainer = document.querySelector('#form-container');
+const pageTitle = document.querySelector('#page-title');
+const libraryContainer = document.querySelector('.library-container');
+const addBookBtn = document.querySelector('#add-book-btn');
+const submitBtn = document.querySelector('#submit-btn');
+const formCloseBtn = document.querySelector('#form-close-btn');
+const newTitle = document.querySelector('#new-title');
+const newAuthor = document.querySelector('#new-author');
+const newPageCount = document.querySelector('#new-page-count');
 let newBookProgress = document.getElementsByName('progress');
 
 
@@ -53,23 +59,38 @@ const addBookToLibrary = (title, author, pages, bookProgress) => {
 }
 
 //when 'add book' button is clicked, display form
-const displayForm = () => {
-
+const toggleForm = () => {
+    formContainer.classList.toggle('hidden');
+    formContainer.classList.toggle('showing');
+    screenCover.classList.toggle('hidden');
+    screenCover.classList.toggle('showing');
+    libraryContainer.classList.toggle('blur');
+    pageTitle.classList.toggle('blur');
+    addBookBtn.classList.toggle('blur');
 }
 
 //get radio btn values for newBookProgress
 const getNewBookProgress = () => {
+    newBookProgress = document.getElementsByName('progress');
     for (let i = 0; i < newBookProgress.length; i++) {
         if (newBookProgress[i].checked){ newBookProgress = newBookProgress[i].value}
     }
 }
 
 //                                  Event Listeners
-submitButton.addEventListener('click', () => {
+submitBtn.addEventListener('click', () => {
     getNewBookProgress();
     addBookToLibrary(newTitle.value, newAuthor.value, newPageCount.value, newBookProgress)
-    
     console.log(myLibrary);
+    toggleForm();
+})
+
+addBookBtn.addEventListener('click',() => {
+    toggleForm();
+})
+
+formCloseBtn.addEventListener('click', () => {
+    toggleForm();
 })
 
 
