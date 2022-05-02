@@ -12,12 +12,12 @@
 }
 
 body{
-    /* background-image: url('./img/background.jpeg'); */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
     background-color: var(--main-bg-color);
     font-family: 'Montserrat Alternates', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
 }
 
 h1 {
@@ -28,19 +28,16 @@ h1 {
     margin: 0px;
 }
 
-#page-container{
-    backdrop-filter: blur(4px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
+button:hover {
+    transform: scale(1.1);
+    transition: .2s;
 }
 
-
+/*                                                  Library container */
 .library-container {
-    width: clamp(361px,60%,1000px);
+    width: clamp(570px,75%,1000px);
     display: grid;
-    grid-template-columns: repeat(3, minmax(145px,1fr));
+    grid-template-columns: repeat(3, minmax(180px,1fr));
     column-gap: 3%;
 }
 
@@ -68,7 +65,11 @@ h2{
     box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
 }
 
+/*                                                  Book cards */
 .book-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     margin: 10px;
     padding: 10px;
     border-radius: 5px;
@@ -84,11 +85,40 @@ h2{
 
 
 .book-author,
-.book-page-count {
+.book-page-count,
+.book-delete-btn,
+.update-progress-btn {
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
 }
 
+.book-btn-div {
+    align-self: center;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    min-width: 140px;
+}
+
+.book-delete-btn,
+.update-progress-btn {
+    font-size: 0.7rem;
+    background-color: var(--book-container-bg-color);
+    border: 1px solid var(--book-container-text-color);
+    border-radius: 5px;
+    color: var(--book-container-text-color);
+}
+.book-delete-btn:hover{
+    background-color: rgba(0, 0, 0, 0.30);
+    color: red;
+}
+.update-progress-btn:hover{
+    background-color: rgba(0, 0, 0, 0.30);
+    color: orange;
+}
+
+/*                                                  Add book btn */
 #add-book-btn {
     background-color: rgb(95, 214, 101);
     color: black;
@@ -101,12 +131,15 @@ h2{
     border-radius: 5px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     align-self: flex-end;
-    margin-right: 20%;
+    margin-right: 13%;
     width: 110px;
     height: 50px;
+    z-index: 1;
 }
 
-#form-container {
+/*                                                  Forms */
+#form-container,
+#update-progress-form-contaner {
     color: rgb(189, 187, 249);
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
@@ -117,7 +150,8 @@ h2{
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
-#form-container ul {
+#form-container li,
+#update-book-progress li {
     list-style: none;
     line-height: 1.6;
 }
@@ -147,21 +181,22 @@ h2{
 }
 
 fieldset {
+    display: flex;
+    flex-direction: column;
     border: none;
 }
 legend {
     font-weight: 700;
 }
 
-#form-container.hidden,
-#screen-cover.hidden {
+.hidden {
     display: none;
 }
 
 #form-container.showing {
     position: fixed;
-    width: 325px;
-    height: 325px;
+    width: 300px;
+    height: 350px;
     top: 50%;
     left: 50%;
     margin-top: -150px; 
@@ -185,8 +220,14 @@ legend {
     filter: blur(7px);
 }
 
+/*                                              Media Queries */
 @media only screen and (max-width: 600px) {
+    h1 {
+        font-size: 3rem;
+        font-weight: 500;
+    }
     .library-container {
+        width: 350px;
         grid-template-columns: minmax(145px,1fr);
         row-gap: 30px;
     }
@@ -196,4 +237,42 @@ legend {
         left: 250px;
         bottom: 30px;
     }
+}
+
+/*                                                 Footer */
+.footer{
+    margin: 20px 0px;
+    margin-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 80%;
+    font-size: 13px;
+}
+.footer img  {
+    aspect-ratio: 1;
+    width: 18px;
+    height: 18px;
+    flex-shrink: none;
+}
+.footer div{
+    display: flex;
+    gap: 6px;    
+    align-items: center;
+    color: var(--heading-one-color);
+}
+
+.footer a:hover {
+    transform: scale(1.05);
+    transition: .2s;
+}
+.footer a:hover img {
+    transform: rotate(1turn);
+    transition: 1s;
+}
+
+a:visited {
+    text-decoration: none;
+    color: var(--heading-one-color);
 }
