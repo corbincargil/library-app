@@ -8,8 +8,8 @@
     <script src="./app.js" defer></script>
     <link rel="stylesheet" href="styles.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300;500;700&display=swap');
-     </style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300;500;700&family=Poppins:wght@300;500&display=swap');
+    </style>
 
     
 </head>
@@ -53,20 +53,21 @@
         <div id="form-container" class="hidden">
             <fieldset>
                 <div class="form-header">
-                    <legend>New Book</legend>
+                    <legend>NEW BOOK</legend>
                     <button id="form-close-btn"><img src="./icons/close-box-outline.png" alt=""></button>
                 </div>
                 <p>*Indicates required field</p>
                 <ul>
                     <form>
-                        <li><label for="new-title">*Title:</label><input type="text" id="new-title"></li>
-                        <li><label for="new-author">*Author:</label><input type="text" id="new-author"></li>
-                        <li><label for="new-page-count">*Total # of pages:</label><input type="number" id="new-page-count"></li>
-                        <li><label>*Book Progress:</label>
+                        <li><label for="new-title">*TITLE:</label><input type="text" id="new-title"></li>
+                        <li><label for="new-author">*AUTHOR:</label><input type="text" id="new-author"></li>
+                        <li><label for="new-page-count">*TOTAL # OF PAGES:</label><input type="number" id="new-page-count"></li>
+                        <br>
+                        <li><label>*BOOK PROGRESS:</label>
                             <ul id="book-progress">
-                                <li><input type="radio" id="not-started" name="progress"  value="1"><label for="not-started">Not Started</label></li>
-                                <li><input type="radio" id="in-progress" name="progress" value="2"><label for="in-progress">In Progress</label></li>
-                                <li><input type="radio" id="finished" name="progress" value="3"><label for="finished">Finished</label></li>
+                                <li><input type="radio" id="not-started" name="progress"  value="1"><label for="not-started">NOT STARTED</label></li>
+                                <li><input type="radio" id="in-progress" name="progress" value="2"><label for="in-progress">IN PROGRESS</label></li>
+                                <li><input type="radio" id="finished" name="progress" value="3"><label for="finished">FINISHED</label></li>
                             </ul>
                         <!-- <li><label for="current-page-count">Current page progress (if in progress):</label><input type="number" id="current-page-count"></li> -->
                         </li>
