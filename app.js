@@ -1,4 +1,6 @@
 let myLibrary = [];
+let newBook;
+let addToColumn;
 
 //                                      Algo:
 // - Display 'new book' form when add book button clicked
@@ -29,6 +31,9 @@ const formCloseBtn = document.querySelector('#form-close-btn');
 const newTitle = document.querySelector('#new-title');
 const newAuthor = document.querySelector('#new-author');
 const newPageCount = document.querySelector('#new-page-count');
+const notStartedColumn = document.querySelector('#not-started-column');
+const inProgressColumn = document.querySelector('#in-progress-column');
+const finishedColumn = document.querySelector('#finished-column');
 let newBookProgress = document.getElementsByName('progress');
 
 
@@ -53,7 +58,7 @@ const addBookToLibrary = (title, author, pages, bookProgress) => {
     if (!title) {alert('Please input a title for the new book!')};
     if (!author) {alert('Please input an author for the new book!')};
     if (!pages) {alert('Please input a page count for the new book!')};
-    let newBook = new Book(title,author,pages,bookProgress);
+    newBook = new Book(title,author,pages,bookProgress);
     myLibrary.push(newBook);
     return myLibrary;
 }
@@ -77,11 +82,33 @@ const getNewBookProgress = () => {
     }
 }
 
+//create a book card and add it to the page
+const createCard = () => {
+    const newCardDiv = document.createElement('div');
+    let newCardTitle = document.createElement('p');
+    let newCardAuthor = document.createElement('p');
+    let newCardPageNumber = document.createElement('p');
+    newCardDiv.classList.add('book-container');
+    newCardTitle.classList.add('book-title');
+    newCardAuthor.classList.add('book-page-number');
+    newCardTitle.textContent = newBook.title;
+    newCardAuthor.textContent = newBook.author;
+    newCardPageNumber.textContent = newBook.pages;
+    newCardDiv.appendChild(newCardTitle);
+    newCardDiv.appendChild(newCardAuthor);
+    newCardDiv.appendChild(newCardPageNumber);
+    if (newBook.bookProgress == 3) {addToColumn = finishedColumn}
+    else if (newBook.bookProgress == 2) {addToColumn = inProgressColumn}
+    else {addToColumn = notStartedColumn}
+    addToColumn.appendChild(newCardDiv); 
+}
+
 //                                  Event Listeners
 submitBtn.addEventListener('click', () => {
     getNewBookProgress();
     addBookToLibrary(newTitle.value, newAuthor.value, newPageCount.value, newBookProgress)
     console.log(myLibrary);
+    createCard();
     toggleForm();
 })
 
