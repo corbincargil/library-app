@@ -13,6 +13,8 @@ let addToColumn;
 //DOM elements
 const screenCover = document.querySelector('#screen-cover');
 const formContainer = document.querySelector('#form-container');
+const progressForm = document.querySelector('#update-progress-form-contaner');
+const progressFormCloseBtn = document.querySelector('#progress-form-close-btn');
 const pageTitle = document.querySelector('#page-title');
 const libraryContainer = document.querySelector('.library-container');
 const addBookBtn = document.querySelector('#add-book-btn');
@@ -83,6 +85,25 @@ const removeBookFromLibrary = (btnClicked) => {
     removeAllCards();
     displayAllCards();
 }
+//toggle update progress form
+const toggleUpdateProgress = () => {
+    progressForm.classList.toggle('hidden');
+    progressForm.classList.toggle('showing');
+    screenCover.classList.toggle('showing');
+    screenCover.classList.toggle('hidden');
+    libraryContainer.classList.toggle('blur');
+    pageTitle.classList.toggle('blur');
+    addBookBtn.classList.toggle('blur');
+}
+//update progress of existing book in array
+const getBookToUpdate = () => {
+    let card = target.parentNode.parentNode;
+    let bookNumber = card.querySelector('.book-number').textContent;
+    let updateProgressSelection = document.getElementsByName('update-progress');
+    for (let i = 0; i < updateProgressSelection.length; i++) {
+        if (updateProgressSelection[i].checked) {myLibrary[bookNumber].bookProgress = updateProgressSelection[i].value}
+    }
+}
 
 //displays all books in the myLibrary array according to their progress
 const displayAllCards = () => {
@@ -95,6 +116,7 @@ const displayAllCards = () => {
         let newCardBtnDiv = document.createElement('div');
         let newCardProgressBtn = document.createElement('button');
         let newCardDeleteBtn = document.createElement('button');
+        let newBookNumber = document.createElement('div');
         newCardDiv.classList.add('book-container',i);
         newCardTitle.classList.add('book-title');
         newCardAuthor.classList.add('book-author');
@@ -102,13 +124,20 @@ const displayAllCards = () => {
         newCardBtnDiv.classList.add('book-btn-div');
         newCardProgressBtn.classList.add('update-progress-btn');
         newCardDeleteBtn.classList.add('book-delete-btn');
+        newBookNumber.classList.add('book-number');
         newCardDeleteBtn.setAttribute('id',i);
         newCardTitle.textContent = newBook.title;
         newCardAuthor.textContent = newBook.author;
         newCardPageNumber.textContent = newBook.pages;
         newCardProgressBtn.textContent = 'Update Progress';
         newCardDeleteBtn.textContent = 'Delete Book';
+        newBookNumber.textContent = i;
+        newCardProgressBtn.addEventListener('click',() => {
+            toggleUpdateProgress();
+            getBookToUpdate();
+        });
         newCardDeleteBtn.addEventListener('click',removeBookFromLibrary);
+        newCardDiv.appendChild(newBookNumber);
         newCardDiv.appendChild(newCardTitle);
         newCardDiv.appendChild(newCardAuthor);
         newCardDiv.appendChild(newCardPageNumber);
@@ -138,6 +167,15 @@ submitBtn.addEventListener('click', () => {
 
 formCloseBtn.addEventListener('click', () => {
     toggleForm();
+})
+
+progressFormCloseBtn.addEventListener('click', () => {
+    toggleUpdateProgress();
+})
+
+updateProgressSubmitBtn.addEventListener('click', () => {
+    removeAllCards();
+    displayAllCards();
 })
 
 //Example books

@@ -77,6 +77,10 @@ h2{
     color: var(--book-container-text-color);
 }
 
+.book-number{
+    display: none;
+}
+
 .book-title {
     font-family: 'Poppins', sans-serif;
     font-style: italic;
@@ -204,6 +208,17 @@ legend {
     z-index: 2;
 }
 
+#update-progress-form-contaner.showing {
+    position: fixed;
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    margin-top: -150px; 
+    margin-left: -150px;
+    z-index: 2;
+}
+
 #screen-cover.showing {
     width: 100vw;
     height: 100vh;
@@ -231,7 +246,6 @@ legend {
         grid-template-columns: minmax(145px,1fr);
         row-gap: 30px;
     }
-
     #add-book-btn {
         position: fixed;
         left: 250px;
@@ -242,7 +256,7 @@ legend {
 /*                                                 Footer */
 .footer{
     margin: 20px 0px;
-    margin-bottom: 100px;
+    margin-bottom: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -271,7 +285,9 @@ legend {
     transform: rotate(1turn);
     transition: 1s;
 }
-
+a {
+    text-decoration: none;
+}
 a:visited {
     text-decoration: none;
     color: var(--heading-one-color);
