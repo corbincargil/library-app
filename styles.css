@@ -1,9 +1,35 @@
 :root { 
-    --main-bg-color: rgb(166, 166, 166);
+    --main-bg-color: rgb(53, 47, 79);
+    --heading-one-color: rgb(189, 187, 249);
+    --column-bg-color: rgb(33, 30, 50);
+    --column-secondary-color: rgb(136, 132, 255);
+    --column-heading-color: rgb(189, 187, 249);
+    --book-container-bg-color: rgb(189, 187, 249);
+    --book-container-text-color: rgb(53, 47, 79);
+    --book-container-border-color: rgb(81, 72, 121);
+    --form-text-color: rgb(189, 187, 249);
+    --form-border-color: rgb(136, 132, 255);
 }
 
 body{
+    /* background-image: url('./img/background.jpeg'); */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     background-color: var(--main-bg-color);
+    font-family: 'Montserrat Alternates', sans-serif;
+}
+
+h1 {
+    letter-spacing: 6px;
+    font-weight: 300;
+    color: var(--heading-one-color);
+    font-size: 4.5rem;
+    margin: 0px;
+}
+
+#page-container{
+    backdrop-filter: blur(4px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,25 +44,47 @@ body{
     column-gap: 3%;
 }
 
+h2{
+    letter-spacing: 2px;
+    font-weight: 300;
+    font-size: 1.2rem;
+}
+
 .not-started,
 .in-progress,
 .finished {
     display: grid;
     grid-template-rows: 50px 1fr 1fr;
     justify-content: center;
-}
-
-.book-container{
-    border: 1px solid black;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
+    color: var(--column-heading-color);
+    
 }
 
 .book-column {
     padding: 5px;
-    border: 3px solid black;
+    border: 3px solid var(--column-secondary-color);
     border-radius: 10px;
+    background-color: var(--column-bg-color);
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+}
+
+.book-container{
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--book-container-bg-color);
+    color: var(--book-container-text-color);
+}
+
+.book-title {
+    font-style: italic;
+    font-weight: 700;
+}
+
+.book-title,
+.book-author,
+.book-page-count {
+    font-family: sans-serif;
 }
 
 #add-book-btn {
@@ -57,8 +105,10 @@ body{
 }
 
 #form-container {
+    color: rgb(189, 187, 249);
     padding: 10px;
     background-color: var(--main-bg-color);
+    border: 3px solid var(--form-border-color);
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
@@ -66,6 +116,10 @@ body{
 #form-container ul {
     list-style: none;
     line-height: 1.6;
+}
+
+#form-container p {
+    font-size: .7rem;
 }
 
 .form-header {
@@ -78,6 +132,7 @@ body{
     margin: 0;
     padding: 0;
 }
+
 .form-header button {
     width: 20px;
     height: 20px;

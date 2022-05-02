@@ -7,71 +7,78 @@
     <title>Corbin's Library</title>
     <script src="./app.js" defer></script>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300;500;700&display=swap');
+     </style>
 
     
 </head>
 <body>
-    <h1 id="page-title">Your Library</h1>
-    <div class="library-container">
-        <div id="not-started-column" class="book-column">
-            <h2 class="not-started">Not Started</h2>
-            <div class="book-container">
-                <p class="book-title">The Mortification of Sin</p>
-                <p class="book-author">John Owen</p>
-                <p class="book-page-count">250</p>
+    <div id="page-container">
+        <h1 id="page-title">BOOK CLUB</h1>
+        <div class="library-container">
+            <div id="not-started-column" class="book-column">
+                <h2 class="not-started">NOT STARTED</h2>
+                <div class="book-container">
+                    <p class="book-title">Harry Potter and the Goblet of Fire</p>
+                    <p class="book-author">JK Rowling</p>
+                    <p class="book-page-count">550</p>
+                </div>
+        
             </div>
-            
+            <div id="in-progress-column" class="book-column">
+                <h2 class="in-progress">IN PROGRESS</h2>
+                <div class="book-container">
+                    <p class="book-title">The Well of Ascension</p>
+                    <p class="book-author">Brandon Sanderson</p>
+                    <p class="book-page-count">785</p>
+                </div>
+            </div>
+            <div id="finished-column" class="book-column">
+                <h2 class="finished">FINISHED</h2>
+                <div class="book-container">
+                    <p class="book-title">Mistborn</p>
+                    <p class="book-author">Brandon Sanderson</p>
+                    <p class="book-page-count">643</p>
+                </div>
+                <div class="book-container">
+                    <p class="book-title">Mere Christianity</p>
+                    <p class="book-author">C.S. Lewis</p>
+                    <p class="book-page-count">150</p>
+                </div>
+            </div>
         </div>
-        <div id="in-progress-column" class="book-column">
-            <h2 class="in-progress">In Progress</h2>
-            <div class="book-container">
-                <p class="book-title">The Well of Ascension</p>
-                <p class="book-author">Brandon Sanderson</p>
-                <p class="book-page-count">785</p>
-            </div>
+        <button type="button" id="add-book-btn">Add Book<img src="./icons/plus-circle-outline-black.png" alt=""></button>
+        <div id="screen-cover" class="hidden"></div>
+        <div id="form-container" class="hidden">
+            <fieldset>
+                <div class="form-header">
+                    <legend>New Book</legend>
+                    <button id="form-close-btn"><img src="./icons/close-box-outline.png" alt=""></button>
+                </div>
+                <p>*Indicates required field</p>
+                <ul>
+                    <form>
+                        <li><label for="new-title">*Title:</label><input type="text" id="new-title"></li>
+                        <li><label for="new-author">*Author:</label><input type="text" id="new-author"></li>
+                        <li><label for="new-page-count">*Total # of pages:</label><input type="number" id="new-page-count"></li>
+                        <li><label>*Book Progress:</label>
+                            <ul id="book-progress">
+                                <li><input type="radio" id="not-started" name="progress"  value="1"><label for="not-started">Not Started</label></li>
+                                <li><input type="radio" id="in-progress" name="progress" value="2"><label for="in-progress">In Progress</label></li>
+                                <li><input type="radio" id="finished" name="progress" value="3"><label for="finished">Finished</label></li>
+                            </ul>
+                        <!-- <li><label for="current-page-count">Current page progress (if in progress):</label><input type="number" id="current-page-count"></li> -->
+                        </li>
+        
+                        <li>
+                            <button id="submit-btn" type="button">Submit</button>
+                            <button type="reset">Clear</button>
+                        </li>
+                    </form>
+                </ul>
+            </fieldset>
         </div>
-        <div id="finished-column" class="book-column">
-            <h2 class="finished">Finished</h2>
-            <div class="book-container">
-                <p class="book-title">Mistborn</p>
-                <p class="book-author">Brandon Sanderson</p>
-                <p class="book-page-count">643</p>
-            </div>
-            <div class="book-container">
-                <p class="book-title">Mere Christianity</p>
-                <p class="book-author">C.S. Lewis</p>
-                <p class="book-page-count">150</p>
-            </div>
-        </div>
-    </div>
-    <button type="button" id="add-book-btn">Add Book<img src="./icons/plus-circle-outline-black.png" alt=""></button>
-    <div id="screen-cover" class="hidden"></div>
-    <div id="form-container" class="hidden">
-        <fieldset>
-            <div class="form-header">
-                <legend>New Book</legend>
-                <button id="form-close-btn"><img src="./icons/close-box-outline.png" alt=""></button>
-            </div>
-            <ul>
-                <form>
-                    <li><label for="new-title">Title:</label><input type="text" id="new-title"></li>
-                    <li><label for="new-author">Author:</label><input type="text" id="new-author"></li>
-                    <li><label for="new-page-count">Page Count:</label><input type="number" id="new-page-count"></li>
-                    <li><label>Book Progress:</label>
-                        <ul id="book-progress">
-                            <li><input type="radio" id="not-started" name="progress"  value="1"><label for="not-started">Not Started</label></li>
-                            <li><input type="radio" id="in-progress" name="progress" value="2"><label for="in-progress">In Progress</label></li>
-                            <li><input type="radio" id="finished" name="progress" value="3"><label for="finished">Finished</label></li>
-                            
-                        </ul>
-                    </li>
-                    <li>
-                        <button id="submit-btn" type="button">Submit</button>
-                        <button type="reset">Clear</button>
-                    </li>
-                </form>
-            </ul>
-        </fieldset>
     </div>
 </body>
 </html>
