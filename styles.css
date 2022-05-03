@@ -285,8 +285,8 @@ legend {
     transform: rotate(1turn);
     transition: 1s;
 }
-a {
-    text-decoration: none;
+.footer a {
+    color: var(--heading-one-color);
 }
 a:visited {
     text-decoration: none;
