@@ -1,6 +1,4 @@
 let myLibrary = [];
-let newBook;
-let addToColumn;
 let bookNumberToUpdate;
 
 //                                      To-do/Features:
@@ -31,23 +29,18 @@ const newPageCount = document.querySelector('#new-page-count');
 const notStartedColumn = document.querySelector('#not-started-column');
 const inProgressColumn = document.querySelector('#in-progress-column');
 const finishedColumn = document.querySelector('#finished-column');
-let newBookProgress = document.getElementsByName('progress');
 const updateProgressSubmitBtn = document.querySelector('#update-progress-submit-btn');
+let newBookProgress = document.getElementsByName('progress');
 
 
-//Book object constuctor
-function Book(title, author, pages, bookProgress) {
-    this.title = title
-    this.author = author
-    this.pages = pages
-    this.bookProgress = bookProgress
-    this.bookNumber = myLibrary.length;
-    this.info = function() {
-        if (finishedReading == true) {
-            return `${title} by ${author} is ${pages} pages long. Has been read.`;
-        } else {
-            return `${title} by ${author}, ${pages} pages long. Has not been read.`;
-        }
+//Book class
+class Book {
+    constructor(title,author,pages,bookProgress) {
+        this.title = title
+        this.author = author
+        this.pages = pages
+        this.bookProgress = bookProgress
+        this.bookNumber = myLibrary.length;
     }
 }
 
@@ -107,11 +100,10 @@ const getBookToUpdate = (butnClicked) => {
     bookNumberToUpdate = butnClicked.target.parentElement.id;
 }
 //update the progress of the selected book using bookToUpdate variable
-const updateProgress = (bookBeingUpdated) => {
-    bookBeingUpdated = bookNumberToUpdate;
+const updateProgress = () => {
     let updateProgressSelection = document.getElementsByName('update-progress');
     for (let i = 0; i < updateProgressSelection.length; i++) {
-        if (updateProgressSelection[i].checked) {myLibrary[bookBeingUpdated].bookProgress = updateProgressSelection[i].value}
+        if (updateProgressSelection[i].checked) {myLibrary[bookNumberToUpdate].bookProgress = updateProgressSelection[i].value}
     }
     removeAllCards();
     displayAllCards();
@@ -121,7 +113,8 @@ const updateProgress = (bookBeingUpdated) => {
 //displays all books in the myLibrary array according to their progress
 const displayAllCards = () => {
     for (let i = 0; i < myLibrary.length; i++) {
-        newBook = myLibrary[i];
+        let newBook = myLibrary[i];
+        let addToColumn;
         const newCardDiv = document.createElement('div');
         let newCardTitle = document.createElement('p');
         let newCardAuthor = document.createElement('p');
@@ -169,7 +162,6 @@ addBookBtn.addEventListener('click',() => {
 submitBtn.addEventListener('click', () => {
     getNewBookProgress();
     addBookToLibrary(newTitle.value, newAuthor.value, newPageCount.value, newBookProgress)
-    console.log(myLibrary);
     removeAllCards();
     displayAllCards();
     toggleForm();
@@ -186,7 +178,7 @@ progressFormCloseBtn.addEventListener('click', () => {
 updateProgressSubmitBtn.addEventListener('click', updateProgress);
 
 //Example books
-addBookToLibrary('Harry Potter and the Goblet of Fire', 'J.K. Rowling', 550,1);
-addBookToLibrary('Mistborn', 'Brandon Sanderson', 250,2);
-addBookToLibrary('Mere Christianity', 'C.S. Lewis', 150,3);
+addBookToLibrary('Harry Potter and the Goblet of Fire', 'J.K. Rowling', 550, 1);
+addBookToLibrary('Mistborn', 'Brandon Sanderson', 250, 2);
+addBookToLibrary('Mere Christianity', 'C.S. Lewis', 150, 3);
 displayAllCards();
