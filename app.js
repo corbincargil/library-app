@@ -11,6 +11,10 @@ let bookNumberToUpdate;
 // - Image of book for background of the cards (different book/color for each book added?)
 // - Dark & Light themes
 
+//                                      Lessons learned:
+// - Practiced using different scopes within functions to manipulate global scope
+
+
 //DOM elements
 const screenCover = document.querySelector('#screen-cover');
 const formContainer = document.querySelector('#form-container');
@@ -31,7 +35,7 @@ let newBookProgress = document.getElementsByName('progress');
 const updateProgressSubmitBtn = document.querySelector('#update-progress-submit-btn');
 
 
-//Book object
+//Book object constuctor
 function Book(title, author, pages, bookProgress) {
     this.title = title
     this.author = author
@@ -135,7 +139,6 @@ const displayAllCards = () => {
         newCardProgressBtn.classList.add('update-progress-btn');
         newCardDeleteBtn.classList.add('book-delete-btn');
         newBookNumber.classList.add('book-number');
-        //newCardDeleteBtn.setAttribute('id',i);
         newCardTitle.textContent = newBook.title;
         newCardAuthor.textContent = newBook.author;
         newCardPageNumber.textContent = newBook.pages;
