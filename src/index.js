@@ -1,3 +1,8 @@
+import './styles.css'
+import plusIcon from './icons/plus-circle-outline-black.png'
+import closeIcon from './icons/close-box-outline.png'
+import ghLogo from './img/github-logo.png'
+
 let myLibrary = [];
 let bookNumberToUpdate;
 
@@ -60,7 +65,7 @@ const addBookToLibrary = (title, author, pages, bookProgress) => {
     if (!title) {alert('Please input a title for the new book!'); return;};
     if (!author) {alert('Please input an author for the new book!'); return;};
     if (!pages) {alert('Please input a page count for the new book!'); return;};
-    newBook = new Book(title,author,pages,bookProgress);
+    let newBook = new Book(title,author,pages,bookProgress);
     myLibrary.push(newBook);
 }
 //get radio btn values for newBookProgress
@@ -159,6 +164,7 @@ addBookBtn.addEventListener('click',() => {
     toggleForm();
 })
 
+
 submitBtn.addEventListener('click', () => {
     getNewBookProgress();
     addBookToLibrary(newTitle.value, newAuthor.value, newPageCount.value, newBookProgress)
@@ -175,7 +181,21 @@ progressFormCloseBtn.addEventListener('click', () => {
     toggleUpdateProgress();
 })
 
+
 updateProgressSubmitBtn.addEventListener('click', updateProgress);
+
+//Adding icons from js instead of html
+const addBookBtnIcon = document.getElementById('plus-icon');
+addBookBtnIcon.src = plusIcon;
+
+const progressFormCloseBtnIcon = document.getElementById('progress-form-close-icon');
+progressFormCloseBtnIcon.src = closeIcon;
+
+const addBookFormCloseBtnIcon = document.getElementById('form-close-icon');
+addBookFormCloseBtnIcon.src = closeIcon;
+
+const ghLinkImg = document.getElementById('gh-logo');
+ghLinkImg.src = ghLogo;
 
 //Example books
 addBookToLibrary('Harry Potter and the Goblet of Fire', 'J.K. Rowling', 550, 1);

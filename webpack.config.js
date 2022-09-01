@@ -3,16 +3,27 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 
 module.exports = {
-    mode: "production",
-    devtool: "inline-source-map",
+    mode: "development",
     entry: {
-      main: path.resolve(__dirname, "./src/index.js"),
+      index: path.resolve(__dirname, "./src/index.js"),
     },
     output: {
-      filename: "[name].js",
+      filename: "[name].[contenthash].js",
       path: path.resolve(__dirname, "dist"),
+      clean: true,
       assetModuleFilename: "[name][ext]",
     },
+    devtool: "inline-source-map",
+    devServer: {
+        static: {
+          directory: path.resolve(__dirname, "dist"),
+        },
+        port: 3000,
+        open: true,
+        hot: true,
+        compress: true,
+        historyApiFallback: true,
+      },
     module: {
         rules: [
           {
@@ -27,7 +38,7 @@ module.exports = {
       },
       plugins: [
         new HtmlWebpackPlugin({
-          title: "Weather App",
+          title: "Library App",
           filename: "index.html",
           template: "src/index.html",
         }),

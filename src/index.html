@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Corbin's Library</title>
-    <script src="app.js" defer></script>
-    <link rel="stylesheet" href="styles.css">
+    <!-- <script src="index.js" defer></script> -->
+    <!-- <link rel="stylesheet" href="styles.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300;500;700&family=Poppins:wght@300;500&display=swap');
-    </style>
+    </style> -->
 
     
 </head>
@@ -26,13 +26,13 @@
             <h2 class="finished">FINISHED</h2>
         </div>
     </div>
-    <button type="button" id="add-book-btn">Add Book<img src="./icons/plus-circle-outline-black.png" alt=""></button>
+    <button type="button" id="add-book-btn">Add Book<img id='plus-icon' alt=""></button>
     <div id="screen-cover" class="hidden"></div>
     <div id="form-container" class="hidden">
         <fieldset>
             <div class="form-header">
                 <legend>NEW BOOK</legend>
-                <button id="form-close-btn"><img src="./icons/close-box-outline.png" alt=""></button>
+                <button id="form-close-btn"><img id='form-close-icon' alt=""></button>
             </div>
             <p>*Indicates required field</p>
                 <form>
@@ -60,7 +60,7 @@
         <fieldset>
             <div class="form-header">
                 <legend>UPDATE BOOK PROGRESS</legend>
-                <button id="progress-form-close-btn"><img src="./icons/close-box-outline.png" alt=""></button>
+                <button id="progress-form-close-btn"><img id='progress-form-close-icon' alt=""></button>
             </div>
             <br>
             <form id="update-book-progress">
@@ -81,7 +81,7 @@
         </fieldset>
     </div>
     <div class="footer"> 
-        <div>Created by Corbin Cargil <a href="https://github.com/corbincargil"><img src="./img/github-logo.png" alt="Corbin's Github"></a></div>
+        <div>Created by Corbin Cargil <a href="https://github.com/corbincargil"><img id='gh-logo' alt="Corbin's Github"></a></div>
         <div>As part of <a href="https://www.theodinproject.com/lessons/node-path-javascript-library" target="_blank"><strong>The Odin Project</strong></a> curriculum</div>
     </div>
 </body>

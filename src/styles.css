@@ -11,6 +11,8 @@
     --form-border-color: rgb(136, 132, 255);
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300;500;700&family=Poppins:wght@300;500&display=swap');
+
 body{
     background-color: var(--main-bg-color);
     font-family: 'Montserrat Alternates', sans-serif;
