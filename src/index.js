@@ -66,6 +66,7 @@ const addBookToLibrary = (title, author, pages, bookProgress) => {
     if (!author) {alert('Please input an author for the new book!'); return;};
     if (!pages) {alert('Please input a page count for the new book!'); return;};
     let newBook = new Book(title,author,pages,bookProgress);
+    console.log(`adding book: ${title}`)
     myLibrary.push(newBook);
 }
 //get radio btn values for newBookProgress
@@ -171,6 +172,7 @@ submitBtn.addEventListener('click', () => {
     removeAllCards();
     displayAllCards();
     toggleForm();
+    onBookFormSubmit();
 })
 
 formCloseBtn.addEventListener('click', () => {
@@ -202,3 +204,174 @@ addBookToLibrary('Harry Potter and the Goblet of Fire', 'J.K. Rowling', 550, 1);
 addBookToLibrary('Mistborn', 'Brandon Sanderson', 250, 2);
 addBookToLibrary('Mere Christianity', 'C.S. Lewis', 150, 3);
 displayAllCards();
+
+//                          FIREBASE
+// Import Firebase 
+import { initializeApp } from "firebase/app";
+import {
+    getAuth,
+    onAuthStateChanged,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signOut,
+} from 'firebase/auth';
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    query,
+    orderBy,
+    limit,
+    onSnapshot,
+    setDoc,
+    updateDoc,
+    doc,
+    serverTimestamp,
+} from 'firebase/firestore';
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCRL0cRZluTry29Vs84dK7ncCQNxsCTKx4",
+  authDomain: "library-app-f8e0b.firebaseapp.com",
+  projectId: "library-app-f8e0b",
+  storageBucket: "library-app-f8e0b.appspot.com",
+  messagingSenderId: "379741890590",
+  appId: "1:379741890590:web:759a7d8601293e929ce60f"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// user authentication
+const auth = getAuth(app);
+
+onAuthStateChanged(auth, user => {
+    if (user != null) {
+        console.log('logged in!');
+    } else {
+        console.log('no user!');
+    }
+});
+
+// Signs-in Friendly Chat.
+async function signIn() {
+    // Sign in Firebase using popup auth and Google as the identity provider.
+    var provider = new GoogleAuthProvider();
+    await signInWithPopup(getAuth(), provider);
+}
+  
+// Signs-out of Friendly Chat.
+function signOutUser() {
+    // Sign out of Firebase.
+    signOut(getAuth());
+}
+  
+// Initiate firebase auth
+function initFirebaseAuth() {
+    // Listen to auth state changes.
+    onAuthStateChanged(getAuth(), authStateObserver);
+}
+
+// Returns the signed-in user's profile Pic URL.
+function getProfilePicUrl() {
+    return getAuth().currentUser.photoURL || '/images/profile_placeholder.png';
+}
+
+  // Triggers when the auth state change for instance when the user signs-in or signs-out.
+function authStateObserver(user) {
+    if (user) {
+      var profilePicUrl = getProfilePicUrl();
+        console.log(profilePicUrl);
+      // Set the user's profile pic and name.
+      userPicElement.src = addSizeToGoogleProfilePic(profilePicUrl);
+
+    } else {
+    }
+}
+
+// Adds a size to Google Profile pics URLs.
+function addSizeToGoogleProfilePic(url) {
+    if (url.indexOf('googleusercontent.com') !== -1 && url.indexOf('?') === -1) {
+      return url + '?sz=150';
+    }
+    return url;
+}
+
+// Returns true if a user is signed-in.
+function isUserSignedIn() {
+    return !!getAuth().currentUser;
+}
+
+// Returns the signed-in user's display name.
+function getUserName() {
+    return getAuth().currentUser.displayName;
+}
+
+// Returns true if user is signed-in. Otherwise false and displays a message.
+function checkSignedInWithMessage() {
+    // Return true if the user is signed in Firebase
+    if (isUserSignedIn()) {
+      return true;
+    }
+}
+
+// Saves a new book to Cloud Firestore.
+async function saveBook(title,author,pageCount,progress) {
+    // Add a new message entry to the Firebase database.
+    try {
+      await addDoc(collection(getFirestore(), 'books'), {
+        name: getUserName(),
+        title: title,
+        author: author,
+        pageCount: pageCount,
+        progress: progress,
+        profilePicUrl: getProfilePicUrl(),
+        timestamp: serverTimestamp()
+      });
+    }
+    catch(error) {
+      console.error('Error writing new message to Firebase Database', error);
+    }
+  }
+
+// Triggered when the send new message form is submitted.
+function onBookFormSubmit(e) {
+    //e.preventDefault();
+    // Check that the user entered a message and is signed in.
+    if (newTitle.value && newAuthor.value && newPageCount.value && checkSignedInWithMessage()) {
+        saveBook(newTitle.value, newAuthor.value, newPageCount.value, newBookProgress).then(function () {
+      });
+    }
+  }
+
+//init services
+const db = getFirestore();
+
+//collection ref
+const colRef = collection(db, 'books');
+
+//get collection data
+getDocs(colRef)
+  .then((snapshot) => {
+    snapshot.docs.forEach((doc) => {
+        const book = doc.data();
+        console.log(book);
+        addBookToLibrary(book.title, book.author, book.pageCount, book.progress)
+    })
+  })
+  .then(() => {
+    removeAllCards();
+    displayAllCards();
+    })
+  .catch(err => {
+    console.log(err.message);
+  })
+
+var userPicElement = document.getElementById('user-pic');
+var signInButtonElement = document.getElementById('sign-in');
+signInButtonElement.addEventListener('click', signIn);
+
+
+initFirebaseAuth();
+//loadMessages();
