@@ -4,7 +4,18 @@ import closeIcon from './icons/close-box-outline.png'
 import ghLogo from './img/github-logo.png'
 
 let myLibrary = [];
+let userLibrary = [];
 let bookNumberToUpdate;
+//                               Firebase To-do/Features:
+// - Add styling for log in/log out, profile pic
+// - Add handleDelete function that will erase books from Firestore 
+//   (not just  from the UI)
+// - Integrate Firestore with updateProgress functionality
+//   (that way when a book is updated, the update is saved in Firestore)
+// - (DONE) Alert message that users must sign in to add a book 
+// - (DONE) Have user sign in and auth before dispaying books 
+// - (DONE) Sign out button 
+
 
 //                                      To-do/Features:
 // - Optional inputs on the form (current page count, date finished, etc.)
@@ -40,12 +51,14 @@ let newBookProgress = document.getElementsByName('progress');
 
 //Book class
 class Book {
-    constructor(title,author,pages,bookProgress) {
+    constructor(title,author,pages,bookProgress,dbId,username) {
         this.title = title
         this.author = author
         this.pages = pages
         this.bookProgress = bookProgress
         this.bookNumber = myLibrary.length;
+        this.dbId = dbId;
+        this.username = username;
     }
 }
 
@@ -61,12 +74,11 @@ const toggleForm = () => {
     addBookBtn.classList.toggle('blur');
 }
 //add book to library
-const addBookToLibrary = (title, author, pages, bookProgress) => {
+const addBookToLibrary = (title, author, pages, bookProgress, dbId, username) => {
     if (!title) {alert('Please input a title for the new book!'); return;};
     if (!author) {alert('Please input an author for the new book!'); return;};
     if (!pages) {alert('Please input a page count for the new book!'); return;};
-    let newBook = new Book(title,author,pages,bookProgress);
-    console.log(`adding book: ${title}`)
+    let newBook = new Book(title,author,pages,bookProgress, dbId, username);
     myLibrary.push(newBook);
 }
 //get radio btn values for newBookProgress
@@ -87,6 +99,7 @@ const removeAllCards = () => {
 const removeBookFromLibrary = (btnClicked) => {
     let bookNumberToRemove = btnClicked.target.parentElement.id;
     myLibrary.splice(bookNumberToRemove,1);
+    handleDeleteBook();
     removeAllCards();
     displayAllCards();
 }
@@ -117,9 +130,8 @@ const updateProgress = () => {
 }
 
 //displays all books in the myLibrary array according to their progress
-const displayAllCards = () => {
-    for (let i = 0; i < myLibrary.length; i++) {
-        let newBook = myLibrary[i];
+const displayAllCards = (book) => {
+        let newBook = book;
         let addToColumn;
         const newCardDiv = document.createElement('div');
         let newCardTitle = document.createElement('p');
@@ -129,23 +141,25 @@ const displayAllCards = () => {
         let newCardProgressBtn = document.createElement('button');
         let newCardDeleteBtn = document.createElement('button');
         let newBookNumber = document.createElement('div');
-        newCardDiv.classList.add('book-container',i);
+        newCardDiv.classList.add('book-container');
         newCardTitle.classList.add('book-title');
         newCardAuthor.classList.add('book-author');
         newCardPageNumber.classList.add('book-page-number');
         newCardBtnDiv.classList.add('book-btn-div');
-        newCardBtnDiv.setAttribute('id',i);
+        // newCardBtnDiv.setAttribute('id',i);
         newCardProgressBtn.classList.add('update-progress-btn');
         newCardDeleteBtn.classList.add('book-delete-btn');
+        //newCardDeleteBtn.setAttribute('id',newBook.id);
         newBookNumber.classList.add('book-number');
         newCardTitle.textContent = newBook.title;
         newCardAuthor.textContent = newBook.author;
         newCardPageNumber.textContent = newBook.pages;
         newCardProgressBtn.textContent = 'Update Progress';
         newCardDeleteBtn.textContent = 'Delete Book';
-        newBookNumber.textContent = i;
+        // newBookNumber.textContent = i;
         newCardProgressBtn.addEventListener('click',getBookToUpdate);
         newCardDeleteBtn.addEventListener('click',removeBookFromLibrary);
+        newCardDeleteBtn.addEventListener('click',handleDeleteBook);
         newCardDiv.appendChild(newBookNumber);
         newCardDiv.appendChild(newCardTitle);
         newCardDiv.appendChild(newCardAuthor);
@@ -157,7 +171,6 @@ const displayAllCards = () => {
         else if (newBook.bookProgress == 2) {addToColumn = inProgressColumn}
         else {addToColumn = notStartedColumn}
         addToColumn.appendChild(newCardDiv); 
-    }
 }
 
 //                                  Event Listeners
@@ -168,9 +181,9 @@ addBookBtn.addEventListener('click',() => {
 
 submitBtn.addEventListener('click', () => {
     getNewBookProgress();
-    addBookToLibrary(newTitle.value, newAuthor.value, newPageCount.value, newBookProgress)
-    removeAllCards();
-    displayAllCards();
+    addBookToLibrary(newTitle.value, newAuthor.value, newPageCount.value, newBookProgress, getUserName())
+    //removeAllCards();
+    //displayAllCards();
     toggleForm();
     onBookFormSubmit();
 })
@@ -200,12 +213,16 @@ const ghLinkImg = document.getElementById('gh-logo');
 ghLinkImg.src = ghLogo;
 
 //Example books
-addBookToLibrary('Harry Potter and the Goblet of Fire', 'J.K. Rowling', 550, 1);
-addBookToLibrary('Mistborn', 'Brandon Sanderson', 250, 2);
-addBookToLibrary('Mere Christianity', 'C.S. Lewis', 150, 3);
-displayAllCards();
+// addBookToLibrary('Harry Potter and the Goblet of Fire', 'J.K. Rowling', 550, 1);
+// addBookToLibrary('Mistborn', 'Brandon Sanderson', 250, 2);
+// addBookToLibrary('Mere Christianity', 'C.S. Lewis', 150, 3);
+// displayAllCards();
 
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 //                          FIREBASE
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 // Import Firebase 
 import { initializeApp } from "firebase/app";
 import {
@@ -218,16 +235,12 @@ import {
 import {
     getFirestore,
     collection,
-    addDoc,
-    getDocs,
-    query,
-    orderBy,
-    limit,
     onSnapshot,
-    setDoc,
-    updateDoc,
+    addDoc,
+    deleteDoc,
     doc,
     serverTimestamp,
+    setDoc,
 } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
@@ -242,9 +255,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 // user authentication
 const auth = getAuth(app);
+//init services
+const db = getFirestore();
+//collection ref
+const colRef = collection(db, 'books');
 
 onAuthStateChanged(auth, user => {
     if (user != null) {
@@ -258,13 +274,25 @@ onAuthStateChanged(auth, user => {
 async function signIn() {
     // Sign in Firebase using popup auth and Google as the identity provider.
     var provider = new GoogleAuthProvider();
-    await signInWithPopup(getAuth(), provider);
+    await signInWithPopup(getAuth(), provider)
+    .then(() => {
+        console.log(myLibrary);
+        userLibrary = myLibrary.map((book) => {
+            if (getUserName() === book.username) {return book}
+        })
+        userLibrary.forEach((book) =>{
+            console.log(book);
+            displayAllCards(book);
+        })
+    })
 }
   
 // Signs-out of Friendly Chat.
 function signOutUser() {
     // Sign out of Firebase.
     signOut(getAuth());
+    userPicElement.src = '';
+    removeAllCards();
 }
   
 // Initiate firebase auth
@@ -281,12 +309,9 @@ function getProfilePicUrl() {
   // Triggers when the auth state change for instance when the user signs-in or signs-out.
 function authStateObserver(user) {
     if (user) {
-      var profilePicUrl = getProfilePicUrl();
-        console.log(profilePicUrl);
-      // Set the user's profile pic and name.
-      userPicElement.src = addSizeToGoogleProfilePic(profilePicUrl);
-
-    } else {
+        var profilePicUrl = getProfilePicUrl();
+        // Set the user's profile pic and name.
+        userPicElement.src = addSizeToGoogleProfilePic(profilePicUrl);
     }
 }
 
@@ -316,62 +341,70 @@ function checkSignedInWithMessage() {
     }
 }
 
-// Saves a new book to Cloud Firestore.
+//real time data collection 
+// getDocs(colRef)
+//   .then((snapshot) => {
+//     snapshot.docs.forEach((doc) => {
+//         const book = doc.data();
+//         console.log(doc);
+//         console.log(book);
+//         addBookToLibrary(book.title, book.author, book.pageCount, book.progress, book.id)
+//     })
+//   })
+//   .then(() => {
+//     if (checkSignedInWithMessage()) {
+//             removeAllCards();
+//             displayAllCards();
+//         }
+//     })
+//   .catch(err => {
+//     console.log(err.message);
+//   })
+
+onSnapshot(colRef, (snapshot) => {
+    removeAllCards();
+    snapshot.docs.forEach((doc) => {
+        const book = doc.data();
+        console.log(`onSnapshot function ran`);
+        addBookToLibrary(book.title, book.author, book.pageCount, book.bookProgress, book.id, book.username);
+        if (checkSignedInWithMessage()) {
+            displayAllCards(book);
+        }
+    })
+    
+})
+
+// Saves a new book to Cloud Firestore
 async function saveBook(title,author,pageCount,progress) {
-    // Add a new message entry to the Firebase database.
-    try {
-      await addDoc(collection(getFirestore(), 'books'), {
-        name: getUserName(),
+    let newBookDoc = await addDoc(colRef, {
+        username: getUserName(),
         title: title,
         author: author,
         pageCount: pageCount,
-        progress: progress,
-        profilePicUrl: getProfilePicUrl(),
+        bookProgress: progress,
+        id: '',
         timestamp: serverTimestamp()
-      });
-    }
-    catch(error) {
-      console.error('Error writing new message to Firebase Database', error);
-    }
-  }
-
-// Triggered when the send new message form is submitted.
-function onBookFormSubmit(e) {
-    //e.preventDefault();
-    // Check that the user entered a message and is signed in.
-    if (newTitle.value && newAuthor.value && newPageCount.value && checkSignedInWithMessage()) {
-        saveBook(newTitle.value, newAuthor.value, newPageCount.value, newBookProgress).then(function () {
-      });
-    }
-  }
-
-//init services
-const db = getFirestore();
-
-//collection ref
-const colRef = collection(db, 'books');
-
-//get collection data
-getDocs(colRef)
-  .then((snapshot) => {
-    snapshot.docs.forEach((doc) => {
-        const book = doc.data();
-        console.log(book);
-        addBookToLibrary(book.title, book.author, book.pageCount, book.progress)
     })
-  })
-  .then(() => {
-    removeAllCards();
-    displayAllCards();
-    })
-  .catch(err => {
-    console.log(err.message);
-  })
+    setDoc(newBookDoc, {id: newBookDoc.id}, {merge: true})
+}
+
+function onBookFormSubmit() {
+    if (!checkSignedInWithMessage()) {alert(`You must be signed in if you want your new book to be saved!`); return;}
+    if (newTitle.value && newAuthor.value && newPageCount.value && newBookProgress && checkSignedInWithMessage()) {
+        saveBook(newTitle.value, newAuthor.value, newPageCount.value, newBookProgress)
+    }
+}
+
+function handleDeleteBook() {
+    const docRef = doc(db, 'books', );
+    deleteDoc(docRef);
+}
 
 var userPicElement = document.getElementById('user-pic');
-var signInButtonElement = document.getElementById('sign-in');
-signInButtonElement.addEventListener('click', signIn);
-
+var signInButton = document.getElementById('sign-in');
+signInButton.addEventListener('click', signIn);
+var signOutButton = document.getElementById('sign-out');
+signOutButton.addEventListener('click', signOutUser);
 
 initFirebaseAuth();
 //loadMessages();
