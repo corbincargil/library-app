@@ -2,6 +2,7 @@ import './styles.css'
 import plusIcon from './icons/plus-circle-outline-black.png'
 import closeIcon from './icons/close-box-outline.png'
 import ghLogo from './img/github-logo.png'
+import placeholderImage from './icons/account-placeholder.png';
 
 let myLibrary = [];
 let userLibrary = [];
@@ -99,9 +100,9 @@ const removeAllCards = () => {
 const removeBookFromLibrary = (btnClicked) => {
     let bookNumberToRemove = btnClicked.target.parentElement.id;
     myLibrary.splice(bookNumberToRemove,1);
-    handleDeleteBook();
-    removeAllCards();
-    displayAllCards();
+    handleDeleteBook(btnClicked.target.id);
+    //removeAllCards();
+    //displayAllCards();
 }
 //toggle update progress form
 const toggleUpdateProgress = () => {
@@ -124,8 +125,8 @@ const updateProgress = () => {
     for (let i = 0; i < updateProgressSelection.length; i++) {
         if (updateProgressSelection[i].checked) {myLibrary[bookNumberToUpdate].bookProgress = updateProgressSelection[i].value}
     }
-    removeAllCards();
-    displayAllCards();
+    // removeAllCards();
+    // displayAllCards();
     toggleUpdateProgress();
 }
 
@@ -149,7 +150,7 @@ const displayAllCards = (book) => {
         // newCardBtnDiv.setAttribute('id',i);
         newCardProgressBtn.classList.add('update-progress-btn');
         newCardDeleteBtn.classList.add('book-delete-btn');
-        //newCardDeleteBtn.setAttribute('id',newBook.id);
+        newCardDeleteBtn.setAttribute('id',newBook.id);
         newBookNumber.classList.add('book-number');
         newCardTitle.textContent = newBook.title;
         newCardAuthor.textContent = newBook.author;
@@ -159,7 +160,7 @@ const displayAllCards = (book) => {
         // newBookNumber.textContent = i;
         newCardProgressBtn.addEventListener('click',getBookToUpdate);
         newCardDeleteBtn.addEventListener('click',removeBookFromLibrary);
-        newCardDeleteBtn.addEventListener('click',handleDeleteBook);
+        // newCardDeleteBtn.addEventListener('click',handleDeleteBook);
         newCardDiv.appendChild(newBookNumber);
         newCardDiv.appendChild(newCardTitle);
         newCardDiv.appendChild(newCardAuthor);
@@ -264,7 +265,7 @@ const colRef = collection(db, 'books');
 
 onAuthStateChanged(auth, user => {
     if (user != null) {
-        console.log('logged in!');
+        console.log(`logged in as: ${getUserName()}`);
     } else {
         console.log('no user!');
     }
@@ -303,7 +304,7 @@ function initFirebaseAuth() {
 
 // Returns the signed-in user's profile Pic URL.
 function getProfilePicUrl() {
-    return getAuth().currentUser.photoURL || '/images/profile_placeholder.png';
+    return getAuth().currentUser.photoURL;
 }
 
   // Triggers when the auth state change for instance when the user signs-in or signs-out.
@@ -311,17 +312,17 @@ function authStateObserver(user) {
     if (user) {
         var profilePicUrl = getProfilePicUrl();
         // Set the user's profile pic and name.
-        userPicElement.src = addSizeToGoogleProfilePic(profilePicUrl);
+        userPicElement.src = profilePicUrl;
     }
 }
 
 // Adds a size to Google Profile pics URLs.
-function addSizeToGoogleProfilePic(url) {
-    if (url.indexOf('googleusercontent.com') !== -1 && url.indexOf('?') === -1) {
-      return url + '?sz=150';
-    }
-    return url;
-}
+// function addSizeToGoogleProfilePic(url) {
+//     if (url.indexOf('googleusercontent.com') !== -1 && url.indexOf('?') === -1) {
+//       return url + '?sz=150';
+//     }
+//     return url;
+// }
 
 // Returns true if a user is signed-in.
 function isUserSignedIn() {
@@ -363,14 +364,14 @@ function checkSignedInWithMessage() {
 
 onSnapshot(colRef, (snapshot) => {
     removeAllCards();
-    snapshot.docs.forEach((doc) => {
-        const book = doc.data();
-        console.log(`onSnapshot function ran`);
-        addBookToLibrary(book.title, book.author, book.pageCount, book.bookProgress, book.id, book.username);
-        if (checkSignedInWithMessage()) {
+    console.log(`onSnapshot function ran`);
+    if (checkSignedInWithMessage()) {
+        snapshot.docs.forEach((doc) => {
+            const book = doc.data();
+            addBookToLibrary(book.title, book.author, book.pageCount, book.bookProgress, book.id, book.username);
             displayAllCards(book);
-        }
-    })
+        })
+    }
     
 })
 
@@ -395,8 +396,8 @@ function onBookFormSubmit() {
     }
 }
 
-function handleDeleteBook() {
-    const docRef = doc(db, 'books', );
+function handleDeleteBook(id) {
+    const docRef = doc(db, 'books', id);
     deleteDoc(docRef);
 }
 
