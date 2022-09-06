@@ -313,6 +313,7 @@ function authStateObserver(user) {
         var profilePicUrl = getProfilePicUrl();
         // Set the user's profile pic and name.
         userPicElement.src = profilePicUrl;
+        getBooks();
     }
 }
 
@@ -362,7 +363,7 @@ function checkSignedInWithMessage() {
 //     console.log(err.message);
 //   })
 
-onSnapshot(colRef, (snapshot) => {
+const getBooks = onSnapshot(colRef, (snapshot) => {
     removeAllCards();
     console.log(`onSnapshot function ran`);
     if (checkSignedInWithMessage()) {
