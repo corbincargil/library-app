@@ -6,7 +6,8 @@ import placeholderImage from './icons/account-placeholder.png';
 
 let myLibrary = [];
 let userLibrary = [];
-let bookNumberToUpdate;
+let bookIdToUpdate;
+let bookToUpdate;
 //                               Firebase To-do/Features:
 // - Add styling for log in/log out, profile pic
 // - Add handleDelete function that will erase books from Firestore 
@@ -100,9 +101,7 @@ const removeAllCards = () => {
 const removeBookFromLibrary = (btnClicked) => {
     let bookNumberToRemove = btnClicked.target.parentElement.id;
     myLibrary.splice(bookNumberToRemove,1);
-    handleDeleteBook(btnClicked.target.id);
-    //removeAllCards();
-    //displayAllCards();
+    handleDeleteBook(btnClicked.target.parentElement.id);
 }
 //toggle update progress form
 const toggleUpdateProgress = () => {
@@ -117,16 +116,24 @@ const toggleUpdateProgress = () => {
 //update progress of existing book in array
 const getBookToUpdate = (butnClicked) => {
     toggleUpdateProgress();
-    bookNumberToUpdate = butnClicked.target.parentElement.id;
+    bookIdToUpdate = butnClicked.target.parentElement.id;
+    console.log(bookIdToUpdate);
 }
 //update the progress of the selected book using bookToUpdate variable
 const updateProgress = () => {
     let updateProgressSelection = document.getElementsByName('update-progress');
+    const bookToUpdate = myLibrary.find((book) => {
+        if (book.dbId === bookIdToUpdate) {return book}
+    });
+    // console.log(`myLibrary: ${myLibrary}`);
+    // console.log(`updateBookArray: ${updateBookArray}`);
+    // let bookToUpdate = updateBookArray[0];
+    console.log(`bookToUpdate: ${bookToUpdate}`);
     for (let i = 0; i < updateProgressSelection.length; i++) {
-        if (updateProgressSelection[i].checked) {myLibrary[bookNumberToUpdate].bookProgress = updateProgressSelection[i].value}
+        if (updateProgressSelection[i].checked) {bookToUpdate.bookProgress = updateProgressSelection[i].value}
     }
-    // removeAllCards();
-    // displayAllCards();
+    const bookToUpdateRef = doc(db, 'books', bookIdToUpdate);
+    updateDoc(bookToUpdateRef, {bookProgress: bookToUpdate.bookProgress});
     toggleUpdateProgress();
 }
 
@@ -147,10 +154,10 @@ const displayAllCards = (book) => {
         newCardAuthor.classList.add('book-author');
         newCardPageNumber.classList.add('book-page-number');
         newCardBtnDiv.classList.add('book-btn-div');
-        // newCardBtnDiv.setAttribute('id',i);
+        newCardBtnDiv.setAttribute('id',newBook.id);
         newCardProgressBtn.classList.add('update-progress-btn');
         newCardDeleteBtn.classList.add('book-delete-btn');
-        newCardDeleteBtn.setAttribute('id',newBook.id);
+        // newCardDeleteBtn.setAttribute('id',newBook.id);
         newBookNumber.classList.add('book-number');
         newCardTitle.textContent = newBook.title;
         newCardAuthor.textContent = newBook.author;
@@ -240,6 +247,7 @@ import {
     addDoc,
     deleteDoc,
     doc,
+    updateDoc,
     serverTimestamp,
     setDoc,
 } from 'firebase/firestore';
@@ -271,9 +279,9 @@ onAuthStateChanged(auth, user => {
     }
 });
 
-// Signs-in Friendly Chat.
+// Signs-in
 async function signIn() {
-    // Sign in Firebase using popup auth and Google as the identity provider.
+    // Sign in Firebase using popup auth and Google as the identity provider
     var provider = new GoogleAuthProvider();
     await signInWithPopup(getAuth(), provider)
     .then(() => {
@@ -302,27 +310,19 @@ function initFirebaseAuth() {
     onAuthStateChanged(getAuth(), authStateObserver);
 }
 
-// Returns the signed-in user's profile Pic URL.
+// Returns the signed-in user's profile Pic URL
 function getProfilePicUrl() {
     return getAuth().currentUser.photoURL;
 }
 
-  // Triggers when the auth state change for instance when the user signs-in or signs-out.
+  // Triggers when the auth state changes
 function authStateObserver(user) {
     if (user) {
         var profilePicUrl = getProfilePicUrl();
-        // Set the user's profile pic and name.
+
         userPicElement.src = profilePicUrl;
     }
 }
-
-// Adds a size to Google Profile pics URLs.
-// function addSizeToGoogleProfilePic(url) {
-//     if (url.indexOf('googleusercontent.com') !== -1 && url.indexOf('?') === -1) {
-//       return url + '?sz=150';
-//     }
-//     return url;
-// }
 
 // Returns true if a user is signed-in.
 function isUserSignedIn() {
@@ -334,35 +334,13 @@ function getUserName() {
     return getAuth().currentUser.displayName;
 }
 
-// Returns true if user is signed-in. Otherwise false and displays a message.
+// Returns true if user is signed-in
 function checkSignedInWithMessage() {
     // Return true if the user is signed in Firebase
     if (isUserSignedIn()) {
       return true;
     }
 }
-
-//real time data collection 
-// getDocs(colRef)
-//   .then((snapshot) => {
-//     snapshot.docs.forEach((doc) => {
-//         const book = doc.data();
-//         console.log(doc);
-//         console.log(book);
-//         addBookToLibrary(book.title, book.author, book.pageCount, book.progress, book.id)
-//     })
-//   })
-//   .then(() => {
-//     if (checkSignedInWithMessage()) {
-//             removeAllCards();
-//             displayAllCards();
-//         }
-//     })
-//   .catch(err => {
-//     console.log(err.message);
-//   })
-
-
 
 // Saves a new book to Cloud Firestore
 async function saveBook(title,author,pageCount,progress) {
@@ -400,6 +378,7 @@ initFirebaseAuth();
 
 onSnapshot(colRef, (snapshot) => {
     removeAllCards();
+    myLibrary = [];
     console.log(`onSnapshot function ran`);
     if (checkSignedInWithMessage()) {
         snapshot.docs.forEach((doc) => {
