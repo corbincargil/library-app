@@ -362,18 +362,7 @@ function checkSignedInWithMessage() {
 //     console.log(err.message);
 //   })
 
-onSnapshot(colRef, (snapshot) => {
-    removeAllCards();
-    console.log(`onSnapshot function ran`);
-    if (checkSignedInWithMessage()) {
-        snapshot.docs.forEach((doc) => {
-            const book = doc.data();
-            addBookToLibrary(book.title, book.author, book.pageCount, book.bookProgress, book.id, book.username);
-            displayAllCards(book);
-        })
-    }
-    
-})
+
 
 // Saves a new book to Cloud Firestore
 async function saveBook(title,author,pageCount,progress) {
@@ -408,4 +397,16 @@ var signOutButton = document.getElementById('sign-out');
 signOutButton.addEventListener('click', signOutUser);
 
 initFirebaseAuth();
-//loadMessages();
+
+onSnapshot(colRef, (snapshot) => {
+    removeAllCards();
+    console.log(`onSnapshot function ran`);
+    if (checkSignedInWithMessage()) {
+        snapshot.docs.forEach((doc) => {
+            const book = doc.data();
+            addBookToLibrary(book.title, book.author, book.pageCount, book.bookProgress, book.id, book.username);
+            displayAllCards(book);
+        })
+    }
+    
+})
