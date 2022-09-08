@@ -383,8 +383,10 @@ onSnapshot(colRef, (snapshot) => {
     if (checkSignedInWithMessage()) {
         snapshot.docs.forEach((doc) => {
             const book = doc.data();
-            addBookToLibrary(book.title, book.author, book.pageCount, book.bookProgress, book.id, book.username);
-            displayAllCards(book);
+            if (getUserName() === book.username) {
+                addBookToLibrary(book.title, book.author, book.pageCount, book.bookProgress, book.id, book.username);
+                displayAllCards(book);
+            }
         })
     }
     
