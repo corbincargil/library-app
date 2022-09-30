@@ -8,7 +8,7 @@ A library web-app where users can input & track book information for books they 
 ## Live Preview:
 
 Use this link to access a live demo:
-https://corbincargil.github.io/library-app/
+https://corbincargil.github.io/library-app/dist
 
 ## Lessons Learned: 
 
