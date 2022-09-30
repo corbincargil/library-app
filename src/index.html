@@ -1,91 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Corbin's Library</title>
     <!-- <script src="index.js" defer></script> -->
     <!-- <link rel="stylesheet" href="styles.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300;500;700&family=Poppins:wght@300;500&display=swap');
     </style> -->
-
-    
-</head>
-<body>
-    <h1 id="page-title">BOOK CLUB</h1>
-    <button id="sign-in">Sign in</button>
-    <button id="sign-out">Sign out</button>
-    <img id="user-pic" referrerpolicy="no-referrer">
-    <div class="library-container">
-        <div id="not-started-column" class="book-column">
-            <h2 class="not-started">NOT STARTED</h2>
-        </div>
-        <div id="in-progress-column" class="book-column">
-            <h2 class="in-progress">IN PROGRESS</h2>
-        </div>
-        <div id="finished-column" class="book-column">
-            <h2 class="finished">FINISHED</h2>
-        </div>
+  </head>
+  <body>
+    <div class="header">
+      <h1 id="page-title">BOOK CLUB</h1>
+      <div class="user-btn-container">
+          <button class="user-button" id="sign-in">Sign in</button>
+          <button class="user-button" id="sign-out">Sign out</button>
+      </div>
+      <img id="user-pic" referrerpolicy="no-referrer" />
     </div>
-    <button type="button" id="add-book-btn">Add Book<img id='plus-icon' alt=""></button>
+    <div class="library-container">
+      <div id="not-started-column" class="book-column">
+        <h2 class="not-started">NOT STARTED</h2>
+      </div>
+      <div id="in-progress-column" class="book-column">
+        <h2 class="in-progress">IN PROGRESS</h2>
+      </div>
+      <div id="finished-column" class="book-column">
+        <h2 class="finished">FINISHED</h2>
+      </div>
+    </div>
+    <button type="button" id="add-book-btn">
+      Add Book<img id="plus-icon" alt="" />
+    </button>
     <div id="screen-cover" class="hidden"></div>
     <div id="form-container" class="hidden">
-        <fieldset>
-            <div class="form-header">
-                <legend>NEW BOOK</legend>
-                <button id="form-close-btn"><img id='form-close-icon' alt=""></button>
-            </div>
-            <p>*Indicates required field</p>
-                <form>
-                    <li><label for="new-title">*TITLE:</label><input type="text" id="new-title"></li>
-                    <li><label for="new-author">*AUTHOR:</label><input type="text" id="new-author"></li>
-                    <li><label for="new-page-count">*PAGE COUNT:</label><input type="number" id="new-page-count"></li>
-                    <br>
-                    <li><label>*BOOK PROGRESS:</label>
-                        <ul id="book-progress">
-                            <li><input type="radio" id="not-started" name="progress"  value="1"><label for="not-started">NOT STARTED</label></li>
-                            <li><input type="radio" id="in-progress" name="progress" value="2"><label for="in-progress">IN PROGRESS</label></li>
-                            <li><input type="radio" id="finished" name="progress" value="3"><label for="finished">FINISHED</label></li>
-                        </ul>
-                    <!-- <li><label for="current-page-count">Current page progress (if in progress):</label><input type="number" id="current-page-count"></li> -->
-                    </li>
-    
-                    <li>
-                        <button id="submit-btn" type="reset">Submit</button>
-                        <button type="reset">Clear</button>
-                    </li>
-                </form>
-        </fieldset>
+      <fieldset>
+        <div class="form-header">
+          <legend>NEW BOOK</legend>
+          <button id="form-close-btn">
+            <img id="form-close-icon" alt="" />
+          </button>
+        </div>
+        <p>*Indicates required field</p>
+        <form>
+          <li>
+            <label for="new-title">*TITLE:</label
+            ><input type="text" id="new-title" />
+          </li>
+          <li>
+            <label for="new-author">*AUTHOR:</label
+            ><input type="text" id="new-author" />
+          </li>
+          <li>
+            <label for="new-page-count">*PAGE COUNT:</label
+            ><input type="number" id="new-page-count" />
+          </li>
+          <br />
+          <li>
+            <label>*BOOK PROGRESS:</label>
+            <ul id="book-progress">
+              <li>
+                <input
+                  type="radio"
+                  id="not-started"
+                  name="progress"
+                  value="1"
+                /><label for="not-started">NOT STARTED</label>
+              </li>
+              <li>
+                <input
+                  type="radio"
+                  id="in-progress"
+                  name="progress"
+                  value="2"
+                /><label for="in-progress">IN PROGRESS</label>
+              </li>
+              <li>
+                <input
+                  type="radio"
+                  id="finished"
+                  name="progress"
+                  value="3"
+                /><label for="finished">FINISHED</label>
+              </li>
+            </ul>
+            <!-- <li><label for="current-page-count">Current page progress (if in progress):</label><input type="number" id="current-page-count"></li> -->
+          </li>
+
+          <li>
+            <button id="submit-btn" type="reset">Submit</button>
+            <button type="reset">Clear</button>
+          </li>
+        </form>
+      </fieldset>
     </div>
     <div id="update-progress-form-contaner" class="hidden">
-        <fieldset>
-            <div class="form-header">
-                <legend>UPDATE BOOK PROGRESS</legend>
-                <button id="progress-form-close-btn"><img id='progress-form-close-icon' alt=""></button>
-            </div>
-            <br>
-            <form id="update-book-progress">
-                <li>
-                    <input type="radio" id="update-not-started" name="update-progress"  value="1" checked>
-                    <label for="update-not-started">NOT STARTED</label>
-                </li>
-                <li>
-                    <input type="radio" id="update-in-progress" name="update-progress" value="2">
-                    <label for="update-in-progress">IN PROGRESS</label>
-                </li>
-                <li>
-                    <input type="radio" id="update-finished" name="update-progress" value="3">
-                    <label for="update-finished">FINISHED</label>
-                </li>
-                <button id="update-progress-submit-btn" type="reset">Submit</button>
-            </form>
-        </fieldset>
+      <fieldset>
+        <div class="form-header">
+          <legend>UPDATE BOOK PROGRESS</legend>
+          <button id="progress-form-close-btn">
+            <img id="progress-form-close-icon" alt="" />
+          </button>
+        </div>
+        <br />
+        <form id="update-book-progress">
+          <li>
+            <input
+              type="radio"
+              id="update-not-started"
+              name="update-progress"
+              value="1"
+              checked
+            />
+            <label for="update-not-started">NOT STARTED</label>
+          </li>
+          <li>
+            <input
+              type="radio"
+              id="update-in-progress"
+              name="update-progress"
+              value="2"
+            />
+            <label for="update-in-progress">IN PROGRESS</label>
+          </li>
+          <li>
+            <input
+              type="radio"
+              id="update-finished"
+              name="update-progress"
+              value="3"
+            />
+            <label for="update-finished">FINISHED</label>
+          </li>
+          <button id="update-progress-submit-btn" type="reset">Submit</button>
+        </form>
+      </fieldset>
     </div>
-    <div class="footer"> 
-        <div>Created by Corbin Cargil <a href="https://github.com/corbincargil"><img id='gh-logo' alt="Corbin's Github"></a></div>
-        <div>As part of <a href="https://www.theodinproject.com/lessons/node-path-javascript-library" target="_blank"><strong>The Odin Project</strong></a> curriculum</div>
+    <div class="footer">
+      <div>
+        Created by Corbin Cargil
+        <a href="https://github.com/corbincargil"
+          ><img id="gh-logo" alt="Corbin's Github"
+        /></a>
+      </div>
+      <div>
+        As part of
+        <a
+          href="https://www.theodinproject.com/lessons/node-path-javascript-library"
+          target="_blank"
+          ><strong>The Odin Project</strong></a
+        >
+        curriculum
+      </div>
     </div>
-</body>
+  </body>
 </html>

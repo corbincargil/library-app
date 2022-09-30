@@ -22,12 +22,41 @@ body{
     gap: 30px;
 }
 
+.header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+}
+
+#page-title {
+    justify-self: center;
+    /* align-self: center; */
+}
+
 h1 {
     letter-spacing: 6px;
     font-weight: 300;
     color: var(--heading-one-color);
     font-size: 4.5rem;
     margin: 0px;
+}
+
+.user-btn-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.user-button {
+    background-color: var(--main-bg-color);
+    color: var(--heading-one-color);
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: 1.2rem;
+}
+
+#user-pic {
+    border-radius: 50px;
 }
 
 button:hover {
